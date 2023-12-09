@@ -4,7 +4,21 @@
     <version>0.1.1</version>
     <vendor email="support@prismstats.com" url="https://prismstats.com">PrismStats</vendor>
     <description>
-        <![CDATA[PrismStats is an IDE plugin that tracks statistics on IDE usage. This includes information such as time spent in code, the languages most frequently used, and the files being edited.]]>
+        <![CDATA[
+            PrismStats is an IDE plugin that tracks statistics on IDE usage. This includes information such as time spent in code, the languages most frequently used, and the files being edited.<br /><br />
+            <h2>Installation & Setup</h2>
+            <ol>
+                <li>Inside your IDE, select <b>Preferences -&gt; Plugins</b>.</a>.</li>
+                <li>Search for <b>PrismStats.</b></li>
+                <li>Click the green <b>Install</b> button.</li>
+                <li>Restart your IDE.</li>
+                <li>Enter your <a href="https://prismstats.com/dashboard/settings#apikey">API Key</a> in <b>Tools -&gt; PrismStats -&gt; Enter API Key</b>, then click Save.</li>
+                <li>Use your IDE and your coding activity will be displayed on your <a href="https://prismstats.com/dashboard">PrismStats Dashboard</a>.</li>
+            </ol>
+
+            <h2>Sourcecode</h2>
+            <a href="https://github.com/PrismStats/p-jetbrains-prismstats">View on GitHub</a>
+        ]]>
     </description>
 
     <depends>com.intellij.modules.lang</depends>
@@ -15,4 +29,10 @@
                                 id="com.prismstats.plugin.jetbrains.CustomStatusBar"
                                 order="first" />
     </extensions>
+
+    <actions>
+        <action id="customSettingsMenu" class="com.prismstats.plugin.jetbrains.CustomSettingsMenu" text="PrismStats">
+            <add-to-group group-id="ToolsMenu" anchor="first" />
+        </action>
+    </actions>
 </idea-plugin>

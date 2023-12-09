@@ -1,9 +1,7 @@
 package com.prismstats.plugin.jetbrains;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.ui.popup.ListPopup;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.StatusBarWidgetFactory;
@@ -13,7 +11,7 @@ import com.intellij.util.Consumer;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.*;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 public class CustomStatusBar implements StatusBarWidgetFactory {
@@ -84,7 +82,6 @@ public class CustomStatusBar implements StatusBarWidgetFactory {
             public ListPopup getPopupStep() {
                 PrismStats.openDashboard();
                 PrismStats.updateStatusBarText();
-                if (widget.statusBar != null) widget.statusBar.updateWidget("PrismStats");
                 return null;
             }
 
@@ -95,9 +92,11 @@ public class CustomStatusBar implements StatusBarWidgetFactory {
             @Override
             public @Nullable
             Icon getIcon() {
-                String theme = UIUtil.isUnderDarcula() ? "dark" : "light";
-                System.out.println("theme: " + theme);
-                return AllIcons.General.ArrowUp;
+                if(UIUtil.isUnderDarcula()) {
+                    return PrismIcons.PrismLight;
+                } else {
+                    return PrismIcons.PrismDark;
+                }
             }
 
             @Nullable
