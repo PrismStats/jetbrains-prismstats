@@ -1,6 +1,5 @@
-package com.prismstats.plugin.jetbrains;
+package com.prismstats.plugin.jetbrains.settingsmenu;
 
-import com.intellij.ProjectTopics;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.Project;
 

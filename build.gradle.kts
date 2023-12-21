@@ -12,12 +12,19 @@ repositories {
 }
 
 // Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     version.set("2022.2.5")
     type.set("IC") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */))
+}
+
+dependencies {
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+
+    // https://projectlombok.org
+    compileOnly("org.projectlombok:lombok:1.18.20")
+    annotationProcessor("org.projectlombok:lombok:1.18.20")
 }
 
 tasks {

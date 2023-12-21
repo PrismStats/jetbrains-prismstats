@@ -25,13 +25,14 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <statusBarWidgetFactory implementation="com.prismstats.plugin.jetbrains.CustomStatusBar"
-                                id="com.prismstats.plugin.jetbrains.CustomStatusBar"
+        <statusBarWidgetFactory implementation="com.prismstats.plugin.jetbrains.statusbar.PrismStatusBar"
+                                id="com.prismstats.plugin.jetbrains.statusbar.PrismStatusBar"
                                 order="first" />
+        <postStartupActivity implementation="com.prismstats.plugin.jetbrains.StartupHandler" />
     </extensions>
 
     <actions>
-        <action id="customSettingsMenu" class="com.prismstats.plugin.jetbrains.CustomSettingsMenu" text="PrismStats">
+        <action id="customSettingsMenu" class="com.prismstats.plugin.jetbrains.settingsmenu.CustomSettingsMenu" text="PrismStats">
             <add-to-group group-id="ToolsMenu" anchor="first" />
         </action>
     </actions>
