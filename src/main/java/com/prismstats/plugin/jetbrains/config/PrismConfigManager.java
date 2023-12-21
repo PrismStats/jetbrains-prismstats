@@ -7,9 +7,10 @@ import java.io.IOException;
 
 public class PrismConfigManager {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String CONFIG_FILE_PATH = "C:/.prismstats/data.json"; // Pfad anpassen
+    private static final String CONFIG_FILE_PATH = System.getProperty("user.home").replaceAll("\\\\", "/") + "/.prismstats/data.json";
 
     public static PrismConfig loadConfig() {
+        System.out.println(System.getProperty("user.home").replaceAll("\\\\", "/"));
         try {
             File configFile = new File(CONFIG_FILE_PATH);
             if (configFile.exists()) {

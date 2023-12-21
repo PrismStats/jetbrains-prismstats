@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.prismstats.plugin.jetbrains.config.PrismConfig;
 import com.prismstats.plugin.jetbrains.config.PrismConfigManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -28,6 +29,12 @@ public class PrismStats {
         String configKey = config.getKey();
 
         return configKey.startsWith("ps_") && configKey.indexOf('.') != -1;
+    }
+
+    public static boolean isCliInstalled() {
+        String cliFilePath = System.getProperty("user.home").replaceAll("\\\\", "/") + "/.prismstats/cli/prismstats.exe";
+        File cliFile = new File(cliFilePath);
+        return cliFile.exists();
     }
 
     public static BigDecimal getCurrentTimestamp() {
