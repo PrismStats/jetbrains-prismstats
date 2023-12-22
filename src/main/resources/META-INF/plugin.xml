@@ -31,6 +31,12 @@
         <postStartupActivity implementation="com.prismstats.plugin.jetbrains.StartupHandler" />
     </extensions>
 
+    <application-components>
+        <component>
+            <implementation-class>com.prismstats.plugin.jetbrains.PrismStats</implementation-class>
+        </component>
+    </application-components>
+
     <actions>
         <action id="customSettingsMenu" class="com.prismstats.plugin.jetbrains.settingsmenu.CustomSettingsMenu" text="PrismStats">
             <add-to-group group-id="ToolsMenu" anchor="first" />
