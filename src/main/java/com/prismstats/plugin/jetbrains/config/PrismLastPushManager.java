@@ -5,25 +5,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 
-public class PrismConfigManager {
+public class PrismLastPushManager {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String CONFIG_FILE_PATH = System.getProperty("user.home").replaceAll("\\\\", "/") + "/.prismstats/data.json";
+    private static final String CONFIG_FILE_PATH = System.getProperty("user.home").replaceAll("\\\\", "/") + "/.prismstats/last_push.json";
 
-    public static PrismConfig loadConfig() {
+    public static PrismLastPush loadConfig() {
         try {
             File configFile = new File(CONFIG_FILE_PATH);
             if (configFile.exists()) {
-                return objectMapper.readValue(configFile, PrismConfig.class);
+                return objectMapper.readValue(configFile, PrismLastPush.class);
             } else {
-                return new PrismConfig();
+                return new PrismLastPush();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return new PrismConfig();
+            return new PrismLastPush();
         }
     }
 
-    public static void saveConfig(PrismConfig config) {
+    public static void saveConfig(PrismLastPush config) {
         try {
             File configFile = new File(CONFIG_FILE_PATH);
             if (!configFile.getParentFile().exists()) {

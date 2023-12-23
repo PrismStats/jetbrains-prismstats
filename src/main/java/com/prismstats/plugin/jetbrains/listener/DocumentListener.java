@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.event.BulkAwareDocumentListener;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.project.Project;
 import com.prismstats.plugin.jetbrains.PrismStats;
+import com.prismstats.plugin.jetbrains.collectors.FileCollector;
 import com.prismstats.plugin.jetbrains.collectors.ProjectCollector;
 
 public class DocumentListener implements BulkAwareDocumentListener.Simple {
@@ -15,7 +16,7 @@ public class DocumentListener implements BulkAwareDocumentListener.Simple {
 
             assert project != null;
 
-            ProjectCollector.addFile(project, documentEvent);
+            FileCollector.addFile(documentEvent);
             ProjectCollector.addProject(project);
         } catch (Exception e) {
             System.out.println(e);

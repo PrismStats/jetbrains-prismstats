@@ -14,11 +14,14 @@ public class FileCollector {
 
         assert file != null;
 
-        jsonObject.put(file.getNameSequence() + "::LINES", documentEvent.getDocument().getLineCount());
-        jsonObject.put(file.getNameSequence() + "::CHARACTERS", documentEvent.getDocument().getTextLength());
-        jsonObject.put(file.getNameSequence() + "::TYPE", file.getFileType());
+        JSONObject files = new JSONObject();
+        files.put("name", file.getName());
+        files.put("path", file.getPath());
+        files.put("type", PrismStats.getLanguage(file));
+        files.put("lines", documentEvent.getDocument().getLineCount());
+        files.put("characters", documentEvent.getDocument().getTextLength());
 
-        System.out.println(jsonObject.toJSONString());
+        jsonObject.put(file.getPath(), files);
     }
 
     public static JSONObject getData() {
