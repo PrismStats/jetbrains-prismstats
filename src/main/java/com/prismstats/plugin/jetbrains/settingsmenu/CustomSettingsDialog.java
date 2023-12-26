@@ -2,6 +2,9 @@ package com.prismstats.plugin.jetbrains.settingsmenu;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.ValidationInfo;
+import com.prismstats.plugin.jetbrains.config.PrismConfig;
+import com.prismstats.plugin.jetbrains.config.PrismConfigManager;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -33,5 +36,25 @@ public class CustomSettingsDialog extends DialogWrapper {
     @Nullable @Override
     protected JComponent createCenterPanel() {
         return jPanel;
+    }
+
+    @Override
+    protected ValidationInfo doValidate() {
+        if (apiKeyTextField.getText().isEmpty()) {
+            return new ValidationInfo("API Key is required", apiKeyTextField);
+        }
+
+        if(!apiKeyTextField.getText().startsWith("ps_")) {
+            return new ValidationInfo("Invalid API Key", apiKeyTextField);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void doOKAction() {
+        PrismConfig config = PrismConfigManager.loadConfig();
+        config.setKey(apiKeyTextField.getText());
+        PrismConfigManager.saveConfig(config);
     }
 }

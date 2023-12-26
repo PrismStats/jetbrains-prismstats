@@ -1,7 +1,7 @@
 <idea-plugin url="https://prismstats.com" require-restart="true">
     <id>com.prismstats.plugin.jetbrains</id>
     <name>PrismStats</name>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <vendor email="support@prismstats.com" url="https://prismstats.com">PrismStats</vendor>
     <description>
         <![CDATA[
@@ -23,11 +23,15 @@
 
     <change-notes>
         <![CDATA[
-            <h3>1.0.0</h2>
+            <h3>1.1.0</h3>
+            <h2>Add validation and saving to API Key input</h2>
+            <p>This release adds ValidationInfo into the CustomSettingsDialog of our plugin. This allows checks to ensure that an API Key is entered and follows the correct format before being accepted. Afterwards, the API Key is saved into the PrismConfig for later retrieval.</p>
+
+            <hr />
+
+            <h3>1.0.0</h3>
             <h2>Improve PrismStats error handling and update plugin details</h2>
-            <ul>
-                <li>This release enhances error handling across several classes, ensuring more detailed responses in case of failures. The JSON parsing is also streamlined in PrismStats.java. The plugin version is updated to 1.0.0 in plugin.xml, accompanied by the inclusion of a changelog for this initial release. Moreover, improvements are made to the data collection process, introducing a mechanism to clear all collected data after successful CLI push, optimizing the efficiency.</li>
-            </ul>
+            <p>This release enhances error handling across several classes, ensuring more detailed responses in case of failures. The JSON parsing is also streamlined in PrismStats.java. The plugin version is updated to 1.0.0 in plugin.xml, accompanied by the inclusion of a changelog for this initial release. Moreover, improvements are made to the data collection process, introducing a mechanism to clear all collected data after successful CLI push, optimizing the efficiency.</p>
         ]]>
     </change-notes>
 
