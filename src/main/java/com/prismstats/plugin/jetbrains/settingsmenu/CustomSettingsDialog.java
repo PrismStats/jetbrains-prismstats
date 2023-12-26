@@ -56,5 +56,6 @@ public class CustomSettingsDialog extends DialogWrapper {
         PrismConfig config = PrismConfigManager.loadConfig();
         config.setKey(apiKeyTextField.getText());
         PrismConfigManager.saveConfig(config);
+        super.doOKAction();
     }
 }
