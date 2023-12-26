@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.prismstats.plugin"
-version = "0.1.0"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -21,8 +21,6 @@ intellij {
 
 dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
-
-    // https://projectlombok.org
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 }
@@ -39,7 +37,6 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("222")
-        untilBuild.set("232.*")
     }
 
     signPlugin {

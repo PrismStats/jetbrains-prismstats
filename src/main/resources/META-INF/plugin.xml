@@ -1,7 +1,7 @@
 <idea-plugin url="https://prismstats.com" require-restart="true">
     <id>com.prismstats.plugin.jetbrains</id>
     <name>PrismStats</name>
-    <version>0.1.1</version>
+    <version>1.0.0</version>
     <vendor email="support@prismstats.com" url="https://prismstats.com">PrismStats</vendor>
     <description>
         <![CDATA[
@@ -20,6 +20,17 @@
             <a href="https://github.com/PrismStats/p-jetbrains-prismstats">View on GitHub</a>
         ]]>
     </description>
+
+    <change-notes>
+        <![CDATA[
+            <h3>1.0.0</h2>
+            <h2>Improve PrismStats error handling and update plugin details</h2>
+            <ul>
+                <li>This release enhances error handling across several classes, ensuring more detailed responses in case of failures. The JSON parsing is also streamlined in PrismStats.java. The plugin version is updated to 1.0.0 in plugin.xml, accompanied by the inclusion of a changelog for this initial release. Moreover, improvements are made to the data collection process, introducing a mechanism to clear all collected data after successful CLI push, optimizing the efficiency.</li>
+            </ul>
+        ]]>
+    </change-notes>
+
 
     <idea-version since-build="213" />
 

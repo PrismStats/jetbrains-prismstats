@@ -14,12 +14,12 @@ public class DocumentListener implements BulkAwareDocumentListener.Simple {
         try {
             Project project = PrismStats.getProject(documentEvent.getDocument());
 
-            assert project != null;
+            if(project == null) return;
 
             FileCollector.addFile(documentEvent);
             ProjectCollector.addProject(project);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Error while collecting data: " + e.getMessage());
         }
     }
 }

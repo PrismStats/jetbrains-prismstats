@@ -20,4 +20,8 @@ public class BaseCollector {
 
         return jsonObject;
     }
+
+    public static void clearData() {
+        jsonObject.clear();
+    }
 }

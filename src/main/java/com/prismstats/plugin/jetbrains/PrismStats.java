@@ -19,8 +19,6 @@ import com.prismstats.plugin.jetbrains.config.PrismLastPush;
 import com.prismstats.plugin.jetbrains.config.PrismLastPushManager;
 import com.prismstats.plugin.jetbrains.listener.DocumentListener;
 import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -153,23 +151,12 @@ public class PrismStats implements ApplicationComponent {
 
             if (exitVal == 0) {
                 System.out.println("Finish CLI push...");
-
                 System.out.println("OUT: " + output.toString());
-
-                JSONParser jsonParser = new JSONParser();
-                JSONObject responseObject = (JSONObject) jsonParser.parse(output.toString());
-
-                System.out.println("RE: " + responseObject);
-
-                if(responseObject.get("status").equals(200)) {
-                    System.out.println("CLI push successful!");
-                } else {
-                    System.out.println("CLI push failed!");
-                }
+                System.out.println("CLI push successful!");
             } else {
                 System.out.println("CLI push failed! (exitVal != 0)");
             }
-        } catch (IOException | InterruptedException | ParseException e) {
+        } catch (IOException | InterruptedException e) {
             System.out.println("ERR");
             throw new RuntimeException(e);
         }

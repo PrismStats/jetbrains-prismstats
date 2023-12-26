@@ -5,6 +5,8 @@ import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
 import com.prismstats.plugin.jetbrains.collectors.BaseCollector;
+import com.prismstats.plugin.jetbrains.collectors.FileCollector;
+import com.prismstats.plugin.jetbrains.collectors.ProjectCollector;
 import com.prismstats.plugin.jetbrains.config.PrismConfig;
 import com.prismstats.plugin.jetbrains.config.PrismConfigManager;
 import org.jetbrains.annotations.NotNull;
@@ -57,8 +59,17 @@ public class StartupHandler implements StartupActivity.Background {
                 StatusBar statusbar = WindowManager.getInstance().getStatusBar(project);
                 statusbar.updateWidget("PrismStats");
 
+
+                if(FileCollector.getData().isEmpty()) {
+                    System.out.println("Nothing to send!");
+                    return;
+                }
+
                 PrismStats.pushCLI(BaseCollector.getData());
+                FileCollector.clearData();
+                ProjectCollector.clearData();
+                BaseCollector.clearData();
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 0, 60, TimeUnit.SECONDS);
     }
 }
