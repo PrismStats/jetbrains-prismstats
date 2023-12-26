@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin url="https://prismstats.com" require-restart="true">
     <id>com.prismstats.plugin.jetbrains</id>
     <name>PrismStats</name>
     <version>0.1.1</version>
@@ -20,6 +20,8 @@
             <a href="https://github.com/PrismStats/p-jetbrains-prismstats">View on GitHub</a>
         ]]>
     </description>
+
+    <idea-version since-build="213" />
 
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>

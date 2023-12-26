@@ -20,7 +20,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class StartupHandler implements StartupActivity.Background {
-    private static final String CLI_DOWNLOAD_LINK = "https://download1479.mediafire.com/eqwb85v1wlugE1EPXV2hTRaYSsN2tvDkDSn__JLg17vf0nOpsHRajLh4AZhiCVVCXoluBxZO-JIsv2zusjsd74lBX_nMtaq6BR4Uwdv8MV396teLtPJ3-BeUPrnKa0-IRyUv4HGQxqqbIHcfi1ytAFWzegiXlkVMb3SMEvHbgboJ/8jm7j9ol8jadcy5/prismstats.exe";
+    private static final String CLI_DOWNLOAD_LINK = "https://github.com/PrismStats/cli-download/releases/download/BETA/prismstats.exe";
 
     @Override
     public void runActivity(@NotNull Project project) {

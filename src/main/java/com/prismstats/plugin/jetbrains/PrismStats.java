@@ -145,18 +145,29 @@ public class PrismStats implements ApplicationComponent {
                 output.append(line).append("\n");
             }
 
+           System.out.println("L: " + output);
+
             int exitVal = process.waitFor();
+
+            System.out.println("E: " + exitVal);
+
             if (exitVal == 0) {
+                System.out.println("Finish CLI push...");
+
+                System.out.println("OUT: " + output.toString());
+
                 JSONParser jsonParser = new JSONParser();
                 JSONObject responseObject = (JSONObject) jsonParser.parse(output.toString());
 
-                System.out.println(responseObject);
+                System.out.println("RE: " + responseObject);
 
                 if(responseObject.get("status").equals(200)) {
                     System.out.println("CLI push successful!");
                 } else {
                     System.out.println("CLI push failed!");
                 }
+            } else {
+                System.out.println("CLI push failed! (exitVal != 0)");
             }
         } catch (IOException | InterruptedException | ParseException e) {
             System.out.println("ERR");
