@@ -38,7 +38,7 @@ public class StartupHandler implements StartupActivity.Background {
                 try {
                     Files.createDirectory(path);
                 } catch (Exception e) {
-                    System.out.println("Error while create cli");
+                    System.out.println("Error while create cli!");
                 }
             }
 
@@ -46,7 +46,7 @@ public class StartupHandler implements StartupActivity.Background {
                 Files.copy(inputStream, cliPath, StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("CLI was downloaded successfully!");
             } catch (Exception e) {
-                System.out.println("Error while downloading cli...");
+                System.out.println("Error while downloading cli!");
             }
         }
 
@@ -65,11 +65,13 @@ public class StartupHandler implements StartupActivity.Background {
                     return;
                 }
 
+                System.out.println(BaseCollector.getData());
+
                 PrismStats.pushCLI(BaseCollector.getData());
                 FileCollector.clearData();
                 ProjectCollector.clearData();
                 BaseCollector.clearData();
             }
-        }, 0, 60, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
     }
 }

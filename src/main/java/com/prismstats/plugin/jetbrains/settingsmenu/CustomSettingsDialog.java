@@ -12,7 +12,6 @@ import java.awt.*;
 
 public class CustomSettingsDialog extends DialogWrapper {
     private final JPanel jPanel;
-    private final JLabel apiKeyLabel;
     private final JTextField apiKeyTextField;
 
     public CustomSettingsDialog(@Nullable Project project) {
@@ -24,7 +23,7 @@ public class CustomSettingsDialog extends DialogWrapper {
         jPanel = new JPanel();
         jPanel.setLayout(new GridLayout(2, 1));
 
-        apiKeyLabel = new JLabel("API Key");
+        JLabel apiKeyLabel = new JLabel("API Key");
         jPanel.add(apiKeyLabel);
 
         apiKeyTextField = new JTextField(20);

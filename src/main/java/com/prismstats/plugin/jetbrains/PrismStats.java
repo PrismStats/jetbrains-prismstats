@@ -1,5 +1,6 @@
 package com.prismstats.plugin.jetbrains;
 
+import com.google.gson.JsonObject;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
@@ -12,13 +13,11 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.messages.MessageBusConnection;
 import com.prismstats.plugin.jetbrains.config.PrismConfig;
 import com.prismstats.plugin.jetbrains.config.PrismConfigManager;
 import com.prismstats.plugin.jetbrains.config.PrismLastPush;
 import com.prismstats.plugin.jetbrains.config.PrismLastPushManager;
 import com.prismstats.plugin.jetbrains.listener.DocumentListener;
-import net.minidev.json.JSONObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -26,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.InetAddress;
 
 public class PrismStats implements ApplicationComponent {
@@ -46,30 +46,19 @@ public class PrismStats implements ApplicationComponent {
             return false;
         }
     }
-    public static boolean isValidKey() {
-        PrismConfig config = PrismConfigManager.loadConfig();
-        String configKey = config.getKey();
-
-        return configKey.startsWith("ps_") && configKey.indexOf('.') != -1;
-    }
     public static boolean isCliInstalled() {
         String cliFilePath = System.getProperty("user.home").replaceAll("\\\\", "/") + "/.prismstats/cli/prismstats.exe";
         File cliFile = new File(cliFilePath);
         return cliFile.exists();
     }
     public static BigDecimal getCurrentTimestamp() {
-        return new BigDecimal(String.valueOf(System.currentTimeMillis() / 1000)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        return new BigDecimal(String.valueOf(System.currentTimeMillis() / 1000)).setScale(4, RoundingMode.HALF_UP);
     }
 
     public static void registerListeners() {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Disposable disposable = Disposer.newDisposable("PrismListener");
-                MessageBusConnection messageBusConnection = ApplicationManager.getApplication().getMessageBus().connect();
-
-                EditorFactory.getInstance().getEventMulticaster().addDocumentListener(new DocumentListener(), disposable);
-            }
+        ApplicationManager.getApplication().invokeLater(() -> {
+            Disposable disposable = Disposer.newDisposable("PrismListener");
+            EditorFactory.getInstance().getEventMulticaster().addDocumentListener(new DocumentListener(), disposable);
         });
     }
 
@@ -77,13 +66,11 @@ public class PrismStats implements ApplicationComponent {
     public static VirtualFile getFile(@Nullable Document document) {
         return isDocumentAvailable(document) ? getVirtualFileFromDocument(document) : null;
     }
-
     private static boolean isDocumentAvailable(@Nullable Document document) {
         if (document == null) return false;
         FileDocumentManager.getInstance();
         return true;
     }
-
     @Nullable
     private static VirtualFile getVirtualFileFromDocument(Document document) {
         return FileDocumentManager.getInstance().getFile(document);
@@ -107,7 +94,22 @@ public class PrismStats implements ApplicationComponent {
         return type.getName();
     }
 
-    public static void pushCLI(JSONObject jsonObject) {
+    public static String getSystemName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            return "Unknown";
+        }
+    }
+
+    public static void push(JsonObject jsonObject) {
+        if(hasInternetConnection()) {
+            pushCLI(jsonObject);
+
+        }
+    }
+
+    public static void pushCLI(JsonObject jsonObject) {
         System.out.println("Trying to push CLI data...");
 
         String directoryPath = System.getProperty("user.home") + "/.prismstats/cli".replaceAll("/", "\\\\");
@@ -116,13 +118,17 @@ public class PrismStats implements ApplicationComponent {
         boolean isWindows = System.getProperty("os.name")
                 .toLowerCase().startsWith("windows");
 
+        System.out.println(System.getProperty("os.name"));
+
         PrismLastPush lastPush = PrismLastPushManager.loadConfig();
-        lastPush.setData(jsonObject.toJSONString());
+        System.out.println(jsonObject.toString());
+        lastPush.setData(jsonObject.toString());
         PrismLastPushManager.saveConfig(lastPush);
 
         ProcessBuilder processBuilder = new ProcessBuilder();
 
         if(isWindows) {
+            System.out.println("windows");
             processBuilder.directory(new File(directoryPath));
             processBuilder.command("cmd.exe", "/c", "cd " + directoryPath + " && " + command);
         } else {
@@ -143,15 +149,9 @@ public class PrismStats implements ApplicationComponent {
                 output.append(line).append("\n");
             }
 
-           System.out.println("L: " + output);
-
             int exitVal = process.waitFor();
 
-            System.out.println("E: " + exitVal);
-
             if (exitVal == 0) {
-                System.out.println("Finish CLI push...");
-                System.out.println("OUT: " + output.toString());
                 System.out.println("CLI push successful!");
             } else {
                 System.out.println("CLI push failed! (exitVal != 0)");
@@ -163,12 +163,10 @@ public class PrismStats implements ApplicationComponent {
     }
 
     public static void updateStatusBarText() {
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-            public void run() {
-                PrismConfig config = PrismConfigManager.loadConfig();
-                config.setTime(config.getTime() + 1);
-                PrismConfigManager.saveConfig(config);
-            }
+        ApplicationManager.getApplication().executeOnPooledThread(() -> {
+            PrismConfig config = PrismConfigManager.loadConfig();
+            config.setTime(config.getTime() + 1);
+            PrismConfigManager.saveConfig(config);
         });
     }
     public static String getStatusBarText() {

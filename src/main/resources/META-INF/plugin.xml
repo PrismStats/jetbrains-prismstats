@@ -1,8 +1,10 @@
 <idea-plugin url="https://prismstats.com" require-restart="true">
     <id>com.prismstats.plugin.jetbrains</id>
     <name>PrismStats</name>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <vendor email="support@prismstats.com" url="https://prismstats.com">PrismStats</vendor>
+    <idea-version since-build="222.*" until-build="233.*" />
+
     <description>
         <![CDATA[
             PrismStats is an IDE plugin that tracks statistics on IDE usage. This includes information such as time spent in code, the languages most frequently used, and the files being edited.<br /><br />
@@ -17,29 +19,16 @@
             </ol>
 
             <h2>Sourcecode</h2>
-            <a href="https://github.com/PrismStats/p-jetbrains-prismstats">View on GitHub</a>
+            <a href="https://github.com/PrismStats/jetbrains-prismstats">View on GitHub</a>
         ]]>
     </description>
 
     <change-notes>
         <![CDATA[
-            <h2>1.1.1 - Add OK action to CustomSettingsDialog class</h2>
-            <p>This release integrates the super class doOKAction method into the CustomSettingsDialog class. It is a necessary enhancement that ensures proper validation and saving of the API key, ensuring smoother operation and better user experience</p>
-
-            <hr>
-
-            <h2>1.1.0 - Add validation and saving to API Key input</h2>
-            <p>This release adds ValidationInfo into the CustomSettingsDialog of our plugin. This allows checks to ensure that an API Key is entered and follows the correct format before being accepted. Afterwards, the API Key is saved into the PrismConfig for later retrieval.</p>
-
-            <hr>
-
-            <h2>1.0.0 - Improve PrismStats error handling and update plugin details</h2>
-            <p>This release enhances error handling across several classes, ensuring more detailed responses in case of failures. The JSON parsing is also streamlined in PrismStats.java. The plugin version is updated to 1.0.0 in plugin.xml, accompanied by the inclusion of a changelog for this initial release. Moreover, improvements are made to the data collection process, introducing a mechanism to clear all collected data after successful CLI push, optimizing the efficiency.</p>
+            <h2>1.2.0 - Update collectors to improve data collection and handling </h2>
+            <p>The code is updated to improve data collection by adding checks for existing files and projects to prevent duplication. The JSONObject is also replaced with JsonObject for better compatibility and performance. These changes help to make the data collection process more efficient and accurate, thereby improving the overall functionality of the plugin.</p>
         ]]>
     </change-notes>
-
-
-    <idea-version since-build="213" />
 
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>

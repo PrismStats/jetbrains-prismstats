@@ -1,26 +1,72 @@
 package com.prismstats.plugin.jetbrains.collectors;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.project.Project;
-import net.minidev.json.JSONObject;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.prismstats.plugin.jetbrains.PrismStats;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.StreamSupport;
 
 public class ProjectCollector {
-    public static JSONObject jsonObject = new JSONObject();
+    public static JsonArray projectArray = new JsonArray();
 
     public static void addProject(Project project) {
-        JSONObject projectObject = new JSONObject();
-        projectObject.put("name", project.getName());
-        projectObject.put("path", project.getBasePath());
-        projectObject.put("files", FileCollector.getData());
+        if(projectArray.isEmpty()) {
+            JsonObject newProject = new JsonObject();
+            newProject.addProperty("name", project.getName());
+            newProject.addProperty("path", project.getBasePath());
+            projectArray.add(newProject);
+            return;
+        }
 
-        jsonObject.put(project.getName(), projectObject);
+        for (int i = 0; i < projectArray.size(); i++) {
+            JsonObject projectObject = projectArray.get(i).getAsJsonObject();
+
+            if (!projectObject.get("path").getAsString().equals(project.getBasePath())) {
+                JsonObject newProject = new JsonObject();
+                newProject.addProperty("name", project.getName());
+                newProject.addProperty("path", project.getBasePath());
+                projectArray.add(newProject);
+            }
+        }
     }
 
-    public static JSONObject getData() {
-        return jsonObject;
+    public static void addProjectFile(Project project, DocumentEvent documentEvent) {
+        @Nullable VirtualFile file = PrismStats.getFile(documentEvent.getDocument());
+        assert file != null;
+
+
+        for (int i = 0; i < projectArray.size(); i++) {
+            if(!projectArray.get(i).getAsJsonObject().get("path").getAsString().equals(project.getBasePath())) return;
+
+            JsonObject projectObject = projectArray.get(i).getAsJsonObject();
+
+            if(!projectObject.has("files")) {
+                JsonArray projectFilesArray = new JsonArray();
+                projectFilesArray.add(file.getPath());
+                projectObject.add("files", projectFilesArray);
+            }
+
+            JsonArray projectFilesArray = projectObject.get("files").getAsJsonArray();
+
+            String filePath = file.getPath();
+            boolean isFileExist = StreamSupport.stream(projectFilesArray.spliterator(), false)
+                    .anyMatch(jsonElement -> jsonElement.getAsString().equals(filePath));
+
+            if (!isFileExist) {
+                projectFilesArray.add(filePath);
+            }
+        }
+    }
+
+    public static JsonArray getData() {
+        return projectArray;
     }
 
     public static void clearData() {
-        jsonObject.clear();
+        projectArray = new JsonArray();
     }
 }
