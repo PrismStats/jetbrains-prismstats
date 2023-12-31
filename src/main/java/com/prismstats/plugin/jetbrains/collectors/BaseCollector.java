@@ -19,6 +19,7 @@ public class BaseCollector {
         jsonObject.addProperty("time", PrismStats.getCurrentTimestamp());
         jsonObject.add("projects", ProjectCollector.getData());
         jsonObject.add("files", FileCollector.getData());
+        jsonObject.add("data", DataCollector.getData());
         return jsonObject;
     }
 

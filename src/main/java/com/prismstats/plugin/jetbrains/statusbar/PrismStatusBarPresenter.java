@@ -7,7 +7,6 @@ import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.StatusBarWidget.Multiframe;
 import com.intellij.openapi.wm.StatusBarWidget.MultipleTextValuesPresentation;
 import com.intellij.util.Consumer;
-import com.intellij.util.ui.UIUtil;
 import com.prismstats.plugin.jetbrains.PrismIcons;
 import com.prismstats.plugin.jetbrains.PrismStats;
 import org.jetbrains.annotations.NonNls;
@@ -57,7 +56,7 @@ public class PrismStatusBarPresenter implements MultipleTextValuesPresentation, 
 
     @Override
     public @Nullable Icon getIcon() {
-        return UIUtil.isUnderDarcula() ? PrismIcons.PrismLight : PrismIcons.PrismDark;
+        return UIManager.getLookAndFeel().getName().equals("Darcula") ? PrismIcons.PrismDark : PrismIcons.PrismLight;
     }
 
     @Override

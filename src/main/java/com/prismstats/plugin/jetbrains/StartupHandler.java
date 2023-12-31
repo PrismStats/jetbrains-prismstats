@@ -5,6 +5,7 @@ import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
 import com.prismstats.plugin.jetbrains.collectors.BaseCollector;
+import com.prismstats.plugin.jetbrains.collectors.DataCollector;
 import com.prismstats.plugin.jetbrains.collectors.FileCollector;
 import com.prismstats.plugin.jetbrains.collectors.ProjectCollector;
 import com.prismstats.plugin.jetbrains.config.PrismConfig;
@@ -70,8 +71,9 @@ public class StartupHandler implements StartupActivity.Background {
                 PrismStats.pushCLI(BaseCollector.getData());
                 FileCollector.clearData();
                 ProjectCollector.clearData();
+                DataCollector.clearData();
                 BaseCollector.clearData();
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 0, 60, TimeUnit.SECONDS);
     }
 }
