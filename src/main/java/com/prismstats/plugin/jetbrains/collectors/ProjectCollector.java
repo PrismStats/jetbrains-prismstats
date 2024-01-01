@@ -36,8 +36,8 @@ public class ProjectCollector {
 
     public static void addProjectFile(Project project, DocumentEvent documentEvent) {
         @Nullable VirtualFile file = PrismStats.getFile(documentEvent.getDocument());
-        assert file != null;
 
+        if(file == null) return;
 
         for (int i = 0; i < projectArray.size(); i++) {
             if(!projectArray.get(i).getAsJsonObject().get("path").getAsString().equals(project.getBasePath())) return;

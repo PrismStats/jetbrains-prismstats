@@ -13,7 +13,8 @@ public class FileCollector {
 
     public static void addFile(DocumentEvent documentEvent) {
         @Nullable VirtualFile file = PrismStats.getFile(documentEvent.getDocument());
-        assert file != null;
+
+        if(file == null) return;
 
         boolean fileAlreadyExists = false;
         int fileIndex = -1;
