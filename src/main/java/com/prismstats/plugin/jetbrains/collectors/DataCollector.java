@@ -1,28 +1,28 @@
 package com.prismstats.plugin.jetbrains.collectors;
-
 import com.google.gson.JsonObject;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DataCollector {
-    public static JsonObject jsonObject = new JsonObject();
+    private static volatile JsonObject jsonObject = new JsonObject();
+    private static final AtomicInteger lines = new AtomicInteger(0);
+    private static final AtomicInteger chars = new AtomicInteger(0);
 
-    public static int lines = 0;
-    public static int chars = 0;
+    public static void addLine(int count) { lines.addAndGet(count); }
+    public static void addChar(int count) { chars.addAndGet(count); }
+    public static void removeLine(int count) { lines.addAndGet(-count); }
+    public static void removeChar(int count) { chars.addAndGet(-count); }
 
-    public static void addLine(int count) { lines += count; };
-    public static void addChar(int count) { chars += count; };
-
-    public static void removeLine(int count) { lines -= count; };
-    public static void removeChar(int count) { chars -= count; };
-
-    public static JsonObject getData() {
-        jsonObject.addProperty("lines", lines);
-        jsonObject.addProperty("chars", chars);
-        return jsonObject;
+    public static synchronized JsonObject getData() {
+        JsonObject copy = jsonObject.deepCopy();
+        copy.addProperty("lines", lines.get());
+        copy.addProperty("chars", chars.get());
+        return copy;
     }
 
-    public static void clearData() {
-        lines = 0;
-        chars = 0;
+    public static synchronized void clearData() {
+        lines.set(0);
+        chars.set(0);
         jsonObject = new JsonObject();
     }
 }
