@@ -8,8 +8,6 @@ import com.prismstats.plugin.jetbrains.collectors.BaseCollector;
 import com.prismstats.plugin.jetbrains.collectors.DataCollector;
 import com.prismstats.plugin.jetbrains.collectors.FileCollector;
 import com.prismstats.plugin.jetbrains.collectors.ProjectCollector;
-import com.prismstats.plugin.jetbrains.config.PrismConfig;
-import com.prismstats.plugin.jetbrains.config.PrismConfigManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
@@ -53,20 +51,13 @@ public class StartupHandler implements StartupActivity.Background {
 
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             if(PrismStats.hasInternetConnection()) {
-                PrismConfig config = PrismConfigManager.loadConfig();
 
                 // HANDLE STATUS BAR WIDGET UPDATE
                 PrismStats.updateStatusBarText();
                 StatusBar statusbar = WindowManager.getInstance().getStatusBar(project);
                 statusbar.updateWidget("PrismStats");
 
-
-                if(FileCollector.getData().isEmpty()) {
-                    System.out.println("Nothing to send!");
-                    return;
-                }
-
-                System.out.println(BaseCollector.getData());
+                if(FileCollector.getData().isEmpty()) return;
 
                 PrismStats.pushCLI(BaseCollector.getData());
                 FileCollector.clearData();

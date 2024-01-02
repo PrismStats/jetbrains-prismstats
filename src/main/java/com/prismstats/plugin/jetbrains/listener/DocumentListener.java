@@ -24,20 +24,27 @@ public class DocumentListener implements BulkAwareDocumentListener.Simple {
 
             if(documentEvent.getOldFragment().toString().isEmpty()) {
                 // CHAR ADDED
-                DataCollector.addChar(documentEvent.getNewFragment().toString().length());
+                DataCollector.addChar(documentEvent.getNewFragment().toString()
+                        .replaceAll(" ", "")
+                        .replaceAll("\n", "")
+                        .length());
             } else if(documentEvent.getNewFragment().toString().isEmpty()) {
                 // CHAR REMOVED
-                DataCollector.removeChar(documentEvent.getOldFragment().toString().length());
+                DataCollector.removeChar(documentEvent.getOldFragment().toString()
+                        .replaceAll(" ", "")
+                        .replaceAll("\n", "")
+                        .length());
             }
 
-            if(documentEvent.getNewFragment().toString().equals("\n")) {
-                // LINE ADDED
-                DataCollector.addLine(1);
-            } else if(documentEvent.getOldFragment().toString().equals("\n")) {
-                // LINE REMOVED
-                DataCollector.removeLine(1);
-            }
+            String[] newLines = documentEvent.getNewFragment().toString().split("\n", -1);
+            int newLineCount = newLines.length - 1;
+            System.out.println("A: " + newLineCount);
+            DataCollector.addLine(newLineCount);
 
+            String[] oldLines = documentEvent.getOldFragment().toString().split("\n", -1);
+            int removedLineCount = oldLines.length - 1;
+            System.out.println("R : "+ removedLineCount);
+            DataCollector.removeLine(removedLineCount);
         } catch (Exception e) {
             System.out.println("Error while collecting data: " + e.getMessage());
         }
