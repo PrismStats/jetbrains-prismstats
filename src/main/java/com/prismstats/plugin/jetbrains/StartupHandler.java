@@ -1,10 +1,11 @@
 package com.prismstats.plugin.jetbrains;
 
+import com.google.gson.JsonObject;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
-import com.prismstats.plugin.jetbrains.collectors.BaseCollector;
+import com.prismstats.plugin.jetbrains.collectors.GeneralCollector;
 import com.prismstats.plugin.jetbrains.collectors.DataCollector;
 import com.prismstats.plugin.jetbrains.collectors.FileCollector;
 import com.prismstats.plugin.jetbrains.collectors.ProjectCollector;
@@ -59,11 +60,20 @@ public class StartupHandler implements StartupActivity.Background {
 
                 if(FileCollector.getData().isEmpty()) return;
 
-                PrismStats.pushCLI(BaseCollector.getData());
+                JsonObject mainObject = new JsonObject();
+                mainObject.addProperty("time", PrismStats.getCurrentTimestamp());
+                mainObject.add("files", FileCollector.getData());
+                mainObject.add("data", DataCollector.getData());
+                mainObject.add("project", ProjectCollector.getData());
+                mainObject.add("general", GeneralCollector.getData());
+
+                PrismStats.pushCLI(GeneralCollector.getData());
+
                 FileCollector.clearData();
-                ProjectCollector.clearData();
                 DataCollector.clearData();
-                BaseCollector.clearData();
+                ProjectCollector.clearData();
+                GeneralCollector.clearData();
+                mainObject = new JsonObject();
             }
         }, 0, 60, TimeUnit.SECONDS);
     }
