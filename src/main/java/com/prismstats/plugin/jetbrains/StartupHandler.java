@@ -61,13 +61,15 @@ public class StartupHandler implements StartupActivity.Background {
                 if(FileCollector.getData().isEmpty()) return;
 
                 JsonObject mainObject = new JsonObject();
-                mainObject.addProperty("time", PrismStats.getCurrentTimestamp());
+                mainObject.addProperty("time", PrismStats.getCurrentTimestamp().toString());
                 mainObject.add("files", FileCollector.getData());
                 mainObject.add("data", DataCollector.getData());
                 mainObject.add("project", ProjectCollector.getData());
                 mainObject.add("general", GeneralCollector.getData());
 
-                PrismStats.pushCLI(GeneralCollector.getData());
+                PrismStats.pushCLI(mainObject, PrismStats.getApiKey());
+
+                System.out.println(mainObject);
 
                 FileCollector.clearData();
                 DataCollector.clearData();
@@ -75,6 +77,6 @@ public class StartupHandler implements StartupActivity.Background {
                 GeneralCollector.clearData();
                 mainObject = new JsonObject();
             }
-        }, 0, 60, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
     }
 }

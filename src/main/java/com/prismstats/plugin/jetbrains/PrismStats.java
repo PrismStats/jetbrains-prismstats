@@ -15,8 +15,6 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.prismstats.plugin.jetbrains.config.PrismConfig;
 import com.prismstats.plugin.jetbrains.config.PrismConfigManager;
-import com.prismstats.plugin.jetbrains.config.PrismLastPush;
-import com.prismstats.plugin.jetbrains.config.PrismLastPushManager;
 import com.prismstats.plugin.jetbrains.listener.DocumentListener;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,6 +53,11 @@ public class PrismStats implements ApplicationComponent {
         return new BigDecimal(String.valueOf(System.currentTimeMillis() / 1000)).setScale(4, RoundingMode.HALF_UP);
     }
 
+    public static String getApiKey() {
+        PrismConfig lastPush = PrismConfigManager.loadConfig();
+        return lastPush.getKey();
+    }
+
     public static void registerListeners() {
         ApplicationManager.getApplication().invokeLater(() -> {
             Disposable disposable = Disposer.newDisposable("PrismListener");
@@ -75,11 +78,9 @@ public class PrismStats implements ApplicationComponent {
     private static VirtualFile getVirtualFileFromDocument(Document document) {
         return FileDocumentManager.getInstance().getFile(document);
     }
-
     public static Editor[] getEditors(Document document) {
         return EditorFactory.getInstance().getEditors(document);
     }
-
     @Nullable
     public static Project getProject(Document document) {
         Editor[] editors = getEditors(document);
@@ -93,7 +94,6 @@ public class PrismStats implements ApplicationComponent {
         FileType type = file.getFileType();
         return type.getName();
     }
-
     public static String getSystemName() {
         try {
             return InetAddress.getLocalHost().getHostName();
@@ -102,37 +102,24 @@ public class PrismStats implements ApplicationComponent {
         }
     }
 
-    public static void push(JsonObject jsonObject) {
-        if(hasInternetConnection()) {
-            pushCLI(jsonObject);
-
-        }
-    }
-
-    public static void pushCLI(JsonObject jsonObject) {
+    public static void pushCLI(JsonObject jsonObject, String token) {
         System.out.println("Trying to push CLI data...");
 
         String directoryPath = System.getProperty("user.home") + "/.prismstats/cli".replaceAll("/", "\\\\");
-        String command = ".\\prismstats push";
+        String command = ".\\prismstats push --data " + jsonObject.toString().replaceAll("\"", "\\\\\"") + " --token " + token;
+
+        System.out.println("CMD: " + 1command);
 
         boolean isWindows = System.getProperty("os.name")
                 .toLowerCase().startsWith("windows");
 
-        System.out.println(System.getProperty("os.name"));
-
-        PrismLastPush lastPush = PrismLastPushManager.loadConfig();
-        System.out.println(jsonObject.toString());
-        lastPush.setData(jsonObject.toString());
-        PrismLastPushManager.saveConfig(lastPush);
-
         ProcessBuilder processBuilder = new ProcessBuilder();
 
         if(isWindows) {
-            System.out.println("windows");
             processBuilder.directory(new File(directoryPath));
             processBuilder.command("cmd.exe", "/c", "cd " + directoryPath + " && " + command);
         } else {
-            System.out.println("Linux");
+            System.out.println("Linux currently not supported!");
         }
 
        try {
@@ -148,6 +135,8 @@ public class PrismStats implements ApplicationComponent {
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
+
+           System.out.println(output);
 
             int exitVal = process.waitFor();
 

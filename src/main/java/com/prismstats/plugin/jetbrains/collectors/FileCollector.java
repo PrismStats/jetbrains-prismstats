@@ -30,7 +30,7 @@ public class FileCollector {
 
         JsonObject fileObject = new JsonObject();
         fileObject.addProperty("name", file.getName());
-        fileObject.addProperty("path", file.getPath());
+        fileObject.addProperty("path", file.getPath().toString());
         fileObject.addProperty("type", PrismStats.getLanguage(file));
         fileObject.addProperty("lines", documentEvent.getDocument().getLineCount());
         fileObject.addProperty("characters", documentEvent.getDocument().getTextLength());
