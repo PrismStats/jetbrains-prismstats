@@ -106,9 +106,7 @@ public class PrismStats implements ApplicationComponent {
         System.out.println("Trying to push CLI data...");
 
         String directoryPath = System.getProperty("user.home") + "/.prismstats/cli".replaceAll("/", "\\\\");
-        String command = ".\\prismstats push --data " + jsonObject.toString().replaceAll("\"", "\\\\\"") + " --token " + token;
-
-        System.out.println("CMD: " + 1command);
+        String command = ".\\prismstats push --data \"" + jsonObject.toString().replaceAll("\"", "SOLIDUS-PS") + "\" --token " + token;
 
         boolean isWindows = System.getProperty("os.name")
                 .toLowerCase().startsWith("windows");
@@ -136,8 +134,6 @@ public class PrismStats implements ApplicationComponent {
                 output.append(line).append("\n");
             }
 
-           System.out.println(output);
-
             int exitVal = process.waitFor();
 
             if (exitVal == 0) {
@@ -149,6 +145,9 @@ public class PrismStats implements ApplicationComponent {
             System.out.println("ERR");
             throw new RuntimeException(e);
         }
+    }
+    public static void generateCliDataString(JsonObject jsonObject) {
+        StringBuffer stringBuffer = new StringBuffer();
     }
 
     public static void updateStatusBarText() {

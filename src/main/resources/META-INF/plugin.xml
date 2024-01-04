@@ -1,7 +1,7 @@
 <idea-plugin url="https://prismstats.com" require-restart="true">
     <id>com.prismstats.plugin.jetbrains</id>
     <name>PrismStats</name>
-    <version>1.3.4</version>
+    <version>1.4.0</version>
     <vendor email="support@prismstats.com" url="https://prismstats.com">PrismStats</vendor>
     <idea-version since-build="221" />
 
@@ -25,7 +25,7 @@
 
     <change-notes>
         <![CDATA[
-            <h2>1.3.4 - Correct calculation of changes in DocumentListener</h2>
+            <h2>1.4.0 - Adjust pushCLI method and improve debug output</h2>
             <p>Improved the handling of document change events in the DocumentListener module. The new implementation now correctly counts the number of added or removed characters/lines, ignoring white spaces and new line characters. Additionally, every change in lines (either removed or added) is counted and recorded more accurately</p>
         ]]>
     </change-notes>

@@ -69,14 +69,12 @@ public class StartupHandler implements StartupActivity.Background {
 
                 PrismStats.pushCLI(mainObject, PrismStats.getApiKey());
 
-                System.out.println(mainObject);
-
                 FileCollector.clearData();
                 DataCollector.clearData();
                 ProjectCollector.clearData();
                 GeneralCollector.clearData();
                 mainObject = new JsonObject();
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 0, 60, TimeUnit.SECONDS);
     }
 }
